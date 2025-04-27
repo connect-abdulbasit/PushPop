@@ -8,8 +8,8 @@ struct Transition
     char fromState;
     char toState;
     char inputSymbol;
-    char stackTop;
-    char pushSymbol;
+    string stackTop;
+    string pushSymbol;
 };
 
 bool simulatePDA(string input, Transition transitions[], int numTransitions, char startState, char acceptState)
@@ -28,20 +28,53 @@ bool simulatePDA(string input, Transition transitions[], int numTransitions, cha
             Transition t = transitions[i];
 
             bool inputMatches = (t.inputSymbol == 'e' || (inputIndex < input.length() && t.inputSymbol == input[inputIndex]));
-            bool stackMatches = (t.stackTop == 'e' || (!pdaStack.empty() && t.stackTop == pdaStack.top()));
+            bool stackMatches = false;
+            if (t.stackTop.length() == 1)
+            {
+                stackMatches = (t.stackTop == "e" || (!pdaStack.empty() && t.stackTop[0] == pdaStack.top()));
+            }
+            else
+            {
+                stack<char> tempStack;
+                stackMatches = true;
+                for (int j = 0; j < t.stackTop.length(); j++)
+                {
+                    if (!pdaStack.empty())
+                    {
+                        tempStack.push(pdaStack.top());
+                        pdaStack.pop();
+                    }
+                    else
+                    {
+                        stackMatches = false;
+                        break;
+                    }
+                }
+                while (!tempStack.empty())
+                {
+                    pdaStack.push(tempStack.top());
+                    tempStack.pop();
+                }
+            }
 
             if (t.fromState == currentState && inputMatches && stackMatches)
             {
                 currentState = t.toState;
 
-                if (t.stackTop != 'e' && !pdaStack.empty())
+                if (t.stackTop != "e" && !pdaStack.empty())
                 {
-                    pdaStack.pop();
+                    for (int j = 0; j < t.stackTop.length(); j++)
+                    {
+                        pdaStack.pop();
+                    }
                 }
 
-                if (t.pushSymbol != 'e')
+                if (t.pushSymbol != "e")
                 {
-                    pdaStack.push(t.pushSymbol);
+                    for (int j = 0; j < t.pushSymbol.length(); j++)
+                    {
+                        pdaStack.push(t.pushSymbol[j]);
+                    }
                 }
 
                 if (t.inputSymbol != 'e')
@@ -88,10 +121,10 @@ int main()
 {
     int numTransitions = 4;
     Transition transitions[] = {
-        {'A', 'A', 'a', 'e', 'A'},
-        {'A', 'B', 'b', 'A', 'e'},
-        {'B', 'B', 'b', 'A', 'e'},
-        {'B', 'C', 'e', '$', 'e'}};
+        {'A', 'A', 'a', "e", "A"},
+        {'A', 'B', 'b', "AA", "e"},
+        {'B', 'B', 'b', "AA", "e"},
+        {'B', 'C', 'e', "$", "e"}};
 
     for (int i = 0; i < numTransitions; i++)
     {
