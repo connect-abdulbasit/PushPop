@@ -2,3 +2,5 @@
 *.out
 temp*
 .vscode/*
+AI-Based/node_modules
+AI-Based/.env
