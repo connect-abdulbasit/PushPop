@@ -129,7 +129,17 @@ int main()
     do
     {
         cout << "Select what do you want : " << endl;
-        cout << "1.a^n b^n (n>0)\n2.a^2n b^n (n>0)\n3.a^n b^2n (n>0)\n4.a^n b^n c^m d^m (n>0,m>0)\n5.a^n b^m c^m d^n (n>0,m>0)\n6.a^2n b^2n (n>0)\n7.a^n b^m (n>m)\n8.a^3n b^n (n>0)\n9.a^n b^m c^(n+m) (n>0,m>0)\n10.a^n b^3n(n>0)\n11.Exit" << endl;
+        cout << "1.a^n b^n (n>0)\n"
+             << "2.a^2n b^n (n>0)\n"
+             << "3.a^3n b^n (n>0)\n"
+             << "4.a^n b^2n (n>0)\n"
+             << "5.a^n b^3n (n>0)\n"
+             << "6.a^2n b^2n (n>0)\n"
+             << "7.a^n b^m (n>m)\n"
+             << "8.a^n b^m c^(n+m) (n>0,m>0)\n"
+             << "9.a^n b^n c^m d^m (n>0,m>0)\n"
+             << "10.a^n b^m c^m d^n (n>0,m>0)\n"
+             << "11.Exit" << endl;
         cin >> option;
         switch (option)
         {
@@ -173,19 +183,15 @@ int main()
 
             break;
         case 3:
-
-            numTransitions = 5;
+            numTransitions = 4;
             static Transition PDA3[] = {
                 {'A', 'A', 'a', "e", "A"},
-                {'A', 'B', 'b', "e", "e"},
-                {'B', 'C', 'b', "A", "e"},
-                {'C', 'B', 'b', "e", "e"},
-                {'C', 'D', 'e', "$", "e"},
-
-            };
+                {'A', 'B', 'b', "AAA", "e"},
+                {'B', 'B', 'b', "AAA", "e"},
+                {'B', 'C', 'e', "$", "e"}};
 
             startState = 'A';
-            acceptState = 'D';
+            acceptState = 'C';
 
             cout << "Enter input string: ";
             cin >> input;
@@ -196,21 +202,16 @@ int main()
 
             break;
         case 4:
-            numTransitions = 8;
+            numTransitions = 5;
             static Transition PDA4[] = {
                 {'A', 'A', 'a', "e", "A"},
-                {'A', 'B', 'b', "A", "e"},
-                {'B', 'B', 'b', "A", "e"},
-                {'B', 'C', 'c', "e", "C"},
-                {'C', 'C', 'c', "e", "C"},
-                {'C', 'D', 'd', "C", "e"},
-                {'D', 'D', 'd', "C", "e"},
-                {'D', 'E', 'e', "$", "e"}
-
-            };
+                {'A', 'B', 'b', "e", "e"},
+                {'B', 'C', 'b', "A", "e"},
+                {'C', 'B', 'b', "e", "e"},
+                {'C', 'D', 'e', "$", "e"}};
 
             startState = 'A';
-            acceptState = 'E';
+            acceptState = 'D';
 
             cout << "Enter input string: ";
             cin >> input;
@@ -221,18 +222,14 @@ int main()
             break;
 
         case 5:
-            numTransitions = 8;
+            numTransitions = 6;
             static Transition PDA5[] = {
                 {'A', 'A', 'a', "e", "A"},
-                {'A', 'B', 'b', "e", "B"},
-                {'B', 'B', 'b', "e", "B"},
-                {'B', 'C', 'c', "B", "e"},
-                {'C', 'C', 'c', "B", "e"},
-                {'C', 'D', 'd', "A", "e"},
-                {'D', 'D', 'd', "A", "e"},
-                {'D', 'E', 'e', "$", "e"}
-
-            };
+                {'A', 'B', 'b', "e", "e"},
+                {'B', 'C', 'b', "e", "e"},
+                {'C', 'D', 'b', "A", "e"},
+                {'D', 'C', 'b', "e", "e"},
+                {'D', 'E', 'e', "$", "e"}};
 
             startState = 'A';
             acceptState = 'E';
@@ -270,12 +267,11 @@ int main()
         case 7:
             numTransitions = 5;
             static Transition PDA7[] = {
-                {'A', 'A', 'a', "e", "A"}, // Push A for each 'a'
-                {'A', 'B', 'b', "A", "e"}, // Start reading b's and pop A's
-                {'B', 'B', 'b', "A", "e"}, // Continue popping A's for b's
-                {'B', 'C', 'e', "A", "e"}, // Check if we have at least one A left
-                {'C', 'D', 'e', "$", "e"}  // Final transition if everything is correct
-            };
+                {'A', 'A', 'a', "e", "A"},
+                {'A', 'B', 'b', "A", "e"},
+                {'B', 'B', 'b', "A", "e"},
+                {'B', 'C', 'e', "A", "e"},
+                {'C', 'D', 'e', "$", "e"}};
 
             startState = 'A';
             acceptState = 'D';
@@ -289,17 +285,19 @@ int main()
             break;
 
         case 8:
-
-            numTransitions = 4;
+            numTransitions = 8;
             static Transition PDA8[] = {
-                {'A', 'A', 'a', "e", "A"}, // Push 3 A's per 'a'
-                {'A', 'B', 'b', "AAA", "e"},   // Start popping 1 A per b
-                {'B', 'B', 'b', "AAA", "e"},   // Continue popping 1 A per b
-                {'B', 'C', 'e', "$", "e"}    // Accept when stack is empty except $
-            };
+                {'A', 'A', 'a', "e", "A"},
+                {'A', 'B', 'b', "e", "B"},
+                {'B', 'B', 'b', "e", "B"},
+                {'B', 'C', 'c', "A", "e"},
+                {'B', 'C', 'c', "B", "e"},
+                {'C', 'C', 'c', "A", "e"},
+                {'C', 'C', 'c', "B", "e"},
+                {'C', 'D', 'e', "$", "e"}};
 
             startState = 'A';
-            acceptState = 'C';
+            acceptState = 'D';
 
             cout << "Enter input string: ";
             cin >> input;
@@ -312,18 +310,17 @@ int main()
         case 9:
             numTransitions = 8;
             static Transition PDA9[] = {
-                {'A', 'A', 'a', "e", "A"}, // Push A for each 'a'
-                {'A', 'B', 'b', "e", "B"}, // Move to state B and push B for first b
-                {'B', 'B', 'b', "e", "B"}, // Push B for each additional b
-                {'B', 'C', 'c', "A", "e"}, // Start popping A's for c's
-                {'B', 'C', 'c', "B", "e"}, // Can also pop B's for c's
-                {'C', 'C', 'c', "A", "e"}, // Keep popping A's for c's
-                {'C', 'C', 'c', "B", "e"}, // Keep popping B's for c's
-                {'C', 'D', 'e', "$", "e"}  // Accept if stack is empty except $
-            };
+                {'A', 'A', 'a', "e", "A"},
+                {'A', 'B', 'b', "A", "e"},
+                {'B', 'B', 'b', "A", "e"},
+                {'B', 'C', 'c', "e", "C"},
+                {'C', 'C', 'c', "e", "C"},
+                {'C', 'D', 'd', "C", "e"},
+                {'D', 'D', 'd', "C", "e"},
+                {'D', 'E', 'e', "$", "e"}};
 
             startState = 'A';
-            acceptState = 'D';
+            acceptState = 'E';
 
             cout << "Enter input string: ";
             cin >> input;
@@ -334,15 +331,16 @@ int main()
             break;
 
         case 10:
-            numTransitions = 6;
-            static Transition PDA10[] =  {
+            numTransitions = 8;
+            static Transition PDA10[] = {
                 {'A', 'A', 'a', "e", "A"},
-                {'A', 'B', 'b', "e", "e"},
-                {'B', 'C', 'b', "e", "e"},
-                {'C', 'D', 'b', "A", "e"},
-                {'D', 'C', 'b', "e", "e"},
-                {'D', 'E', 'e', "$", "e"}
-            };
+                {'A', 'B', 'b', "e", "B"},
+                {'B', 'B', 'b', "e", "B"},
+                {'B', 'C', 'c', "B", "e"},
+                {'C', 'C', 'c', "B", "e"},
+                {'C', 'D', 'd', "A", "e"},
+                {'D', 'D', 'd', "A", "e"},
+                {'D', 'E', 'e', "$", "e"}};
 
             startState = 'A';
             acceptState = 'E';
