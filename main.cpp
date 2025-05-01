@@ -119,30 +119,159 @@ bool simulatePDA(string input, Transition transitions[], int numTransitions, cha
 
 int main()
 {
-    int numTransitions = 4;
-    Transition transitions[] = {
-        {'A', 'A', 'a', "e", "A"},
-        {'A', 'B', 'b', "AA", "e"},
-        {'B', 'B', 'b', "AA", "e"},
-        {'B', 'C', 'e', "$", "e"}};
-
-    for (int i = 0; i < numTransitions; i++)
-    {
-        cout << transitions[i].fromState << " " << transitions[i].toState << " "
-             << transitions[i].inputSymbol << " " << transitions[i].stackTop << " "
-             << transitions[i].pushSymbol << endl;
-    }
-
-    char startState = 'A';
-    char acceptState = 'C';
+    int option;
+    int numTransitions;
+    char startState;
+    char acceptState;
     string input;
+    bool accepted;
 
-    cout << "Enter input string: ";
-    cin >> input;
+    do
+    {
+        cout << "Select what do you want : " << endl;
+        cout << "1.a^n b^n \n2.a^2n b^2n \n3.a^nb^nc^md^m  \n4.a^nb^mc^md^n \n5.a^nb^2n \n6. \n7. \n8. \n9. \n10. \n11.Exit" << endl;
+        cin >> option;
+        switch (option)
+        {
+        case 1:
+            numTransitions = 4;
+            static Transition PDA1[] = {
+                {'A', 'A', 'a', "e", "A"},
+                {'A', 'B', 'b', "A", "e"},
+                {'B', 'B', 'b', "A", "e"},
+                {'B', 'C', 'e', "$", "e"}};
 
-    bool accepted = simulatePDA(input, transitions, numTransitions, startState, acceptState);
+            startState = 'A';
+            acceptState = 'C';
 
-    cout << "String is " << (accepted ? "ACCEPTED" : "REJECTED") << endl;
+            cout << "Enter input string: ";
+            cin >> input;
+
+            accepted = simulatePDA(input, PDA1, numTransitions, startState, acceptState);
+
+            cout << "String is " << (accepted ? "ACCEPTED" : "REJECTED") << endl;
+
+            break;
+
+        case 2:
+            numTransitions = 4;
+            static Transition PDA2[] = {
+                {'A', 'A', 'a', "e", "A"},
+                {'A', 'B', 'b', "AA", "e"},
+                {'B', 'B', 'b', "AA", "e"},
+                {'B', 'C', 'e', "$", "e"}};
+
+            startState = 'A';
+            acceptState = 'C';
+
+            cout << "Enter input string: ";
+            cin >> input;
+
+            accepted = simulatePDA(input, PDA2, numTransitions, startState, acceptState);
+
+            cout << "String is " << (accepted ? "ACCEPTED" : "REJECTED") << endl;
+
+            break;
+
+        case 3:
+            numTransitions = 8;
+            static Transition PDA3[] = {
+                {'A', 'A', 'a', "e", "A"},
+                {'A', 'B', 'b', "A", "e"},
+                {'B', 'B', 'b', "A", "e"},
+                {'B', 'C', 'c', "e", "C"},
+                {'C', 'C', 'c', "e", "C"},
+                {'C', 'D', 'd', "C", "e"},
+                {'D', 'D', 'd', "C", "e"},
+                {'D', 'E', 'e', "$", "e"}
+
+            };
+
+            startState = 'A';
+            acceptState = 'E';
+
+            cout << "Enter input string: ";
+            cin >> input;
+
+            accepted = simulatePDA(input, PDA3, numTransitions, startState, acceptState);
+
+            cout << "String is " << (accepted ? "ACCEPTED" : "REJECTED") << endl;
+            break;
+
+        case 4:
+            numTransitions = 8;
+            static Transition PDA4[] = {
+                {'A', 'A', 'a', "e", "A"},
+                {'A', 'B', 'b', "e", "B"},
+                {'B', 'B', 'b', "e", "B"},
+                {'B', 'C', 'c', "B", "e"},
+                {'C', 'C', 'c', "B", "e"},
+                {'C', 'D', 'd', "A", "e"},
+                {'D', 'D', 'd', "A", "e"},
+                {'D', 'E', 'e', "$", "e"}
+
+            };
+
+            startState = 'A';
+            acceptState = 'E';
+
+            cout << "Enter input string: ";
+            cin >> input;
+
+            accepted = simulatePDA(input, PDA4, numTransitions, startState, acceptState);
+
+            cout << "String is " << (accepted ? "ACCEPTED" : "REJECTED") << endl;
+            break;
+
+        case 5:
+
+        numTransitions = 5;
+            static Transition PDA5[] = {
+                {'A', 'A', 'a', "e", "A"},
+                {'A', 'B', 'b', "A", "e"},
+                {'B', 'C', 'b', "e", "e"},
+                {'C', 'A', 'e', "e", "e"},
+                {'A', 'D', 'e', "$", "e"},
+            
+            };
+
+            startState = 'A';
+            acceptState = 'D';
+
+            cout << "Enter input string: ";
+            cin >> input;
+
+            accepted = simulatePDA(input, PDA5, numTransitions, startState, acceptState);
+
+            cout << "String is " << (accepted ? "ACCEPTED" : "REJECTED") << endl;
+
+            break;
+
+        case 6:
+
+            break;
+
+        case 7:
+            break;
+
+        case 8:
+            break;
+
+        case 9:
+            break;
+
+        case 10:
+            break;
+
+        case 11:
+            cout << "Exit Successfully : Thank You !!" << endl;
+            break;
+
+        default:
+            cout << "Invalid Option : Try Again !!" << endl;
+            break;
+        }
+    } while (option != 11);
 
     return 0;
 }
